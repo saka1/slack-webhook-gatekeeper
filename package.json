@@ -1,0 +1,20 @@
+{
+  "name": "webhook-gatekeeper",
+  "version": "1.0.0",
+  "author": "saka1",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "npm": "^6.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.2",
+    "serverless": "^1.33.2"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  }
+}

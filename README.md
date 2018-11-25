@@ -1,53 +1,15 @@
-## Motivation
+# webhook-gatekeeper
 
-- Slackでリッチなボットを作るにはwebhookを受ける必要がある
-- しかし、webhookをイントラネットへ通すには、セキュリティ上のリスクが伴う
-  - botを誰が保守するのか？ 保守し続けられることが保証できるか？
-  - Global IPを晒すこと＝常に何らかの攻撃リスクがある
+Create receiver on AWS to receive webhook from Slack.
 
-このギャップを解決したい。
+## Usage
 
-## Solution
+```sh
+yarn install
+cd webhook-proxy && yarn install && cd ../
 
-Botの前段にリバースプロキシを立てて、webhookの認証を行うシステムを構築する。
+# set environment variables written in webhook-proxy/serverless.yml
 
-- リバースプロキシ自体の保守問題を回避するため、フルマネージドなものを使う
-- リクエストの検証を行うことで不正なアクセスが弾かれることを担保する
-- リクエストをパスベースでルーティングすることで、複数システムから利用できるようにする
-
-複数システムから利用する際には、権限をどう管理する（どう受け渡し、どう読み出すか）かが問題となる。
-
-- ひとまずkvsにそのまま置く
-- kvsへ置くフローをどう定義するかは、別途検討
-
-## Technical Detail
-
-- API Gateway
-  - Path Routing
-  - Lambdaオーサライザによる認証
-- webhookのverify後、バックエンドにそのままルーティングする
-  - したがって、透過的にゲートウェイを利用できる（bot app側で存在を意識する必要はほぼない）
-  - できるだけすぐHTTP 200を返すなどのSlack推奨パターンを使ってもらった方が嬉しくはある
-- KVSはAWSのパラメータストアを想定したいが、こいつ4KiBまでしか置けないぞ
-
-## Ideal Idea
-
-- たぶんbot appのAPI secret相当のものは公開鍵で暗号化してもらって、それを直接S3など堅牢なストレージに置くのがよい
-  - IP制限を入れたAPI Gatewayからlambdaを起動してS3に保存、など、やり方は無数にある
-  - いずれにせよ、各システムに勝手にやってもらえる形を作るべき
-- S3に置かれた鍵は、Putイベントをフックする形でlambdaで復号してパラメータストアに置く、もしくはS3に置き直すなど
-  - lambdaオーサライザが読めればいいので、なんでもいい
-
-## コストモデル
-
-転送量 & API Gateway & Lambdaだが、極めて微小にとどまると期待される。
-
-## Memo
-
+# deploy
+./serverless.sh deploy -v
 ```
-SlackにInteractive ComponentsのRequest URLを登録する段階で、チャレンジリクエストがSlackから来るので、それを保存しておく
-token: チャレンジリクエストに含まれている
-dwango team_id: T027WHQMQ
-api_app_id: アプリごとに決まっている
-```
-
