@@ -2,8 +2,8 @@
 
 set -eu
 
-if [ $# -eq 0 ]; then
-    echo 'this script requires one argument' 1>&2
+if [ $# -le 1 ]; then
+    echo 'this script requires two arguments' 1>&2
     exit 1
 fi
 
@@ -15,4 +15,4 @@ if [ ! -d $target_dir ]; then
 fi
 
 cd ./$target_dir
-yarn run test
+yarn run $2

@@ -8,6 +8,7 @@ module.exports = {
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "import/newline-after-import": 0,
     "import/order": 0,
+    "no-underscore-dangle": ["error", { allowAfterThis: true }],
   },
   plugins: ["jest", "prettier"],
 };

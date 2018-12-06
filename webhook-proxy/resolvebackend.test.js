@@ -15,7 +15,13 @@ class SSMMock {
     this.params = params;
   }
 }
+
 const ssm = new SSMMock();
+ssm.setParameter([
+  { Name: "/root/service-a", Value: "hoge" },
+  { Name: "/root/service-a/url", Value: "example.com" },
+  { Name: "/root/service-a/signingSecret", Value: "secret-string" },
+]);
 const BackendResolver = require("./resolvebackend");
 const backendResolver = new BackendResolver(ssm, "/root");
 
@@ -25,10 +31,6 @@ test("unknown service", async () => {
 });
 
 test("found service", async () => {
-  ssm.setParameter([
-    { Name: "/root/service-a/url", Value: "example.com" },
-    { Name: "/root/service-a/signingSecret", Value: "secret-string" },
-  ]);
   const result = await backendResolver.resolve("service-a");
   expect(result.found).toBe(true);
   expect(result.backendService).toEqual({

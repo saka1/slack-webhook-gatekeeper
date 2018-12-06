@@ -6,10 +6,12 @@
   "dependencies": {
     "@slack/events-api": "^2.1.1",
     "aws-sdk": "^2.370.0",
+    "lodash.memoize": "^4.1.2",
     "request": "^2.88.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "cover": "jest --coverage"
   },
   "devDependencies": {
     "jest": "^23.6.0"
