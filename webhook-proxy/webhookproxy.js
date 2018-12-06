@@ -1,7 +1,6 @@
-
 const notFoundResponse = {
   statusCode: 404,
-  body: '',
+  body: "",
 };
 
 const badRequestResponse = {
@@ -17,8 +16,8 @@ module.exports = class WebhookProxy {
 
   async handler(event, _context, callback) {
     // resolve backend phase
-    if (!(event.pathParameters && 'backendServiceId' in event.pathParameters)) {
-      console.log('backendServiceId not found');
+    if (!(event.pathParameters && "backendServiceId" in event.pathParameters)) {
+      console.log("backendServiceId not found");
       return callback(null, badRequestResponse);
     }
     const { backendServiceId } = event.pathParameters;
@@ -28,23 +27,26 @@ module.exports = class WebhookProxy {
       return callback(null, notFoundResponse);
     }
     // verify phase
-    if (!('X-Slack-Signature' in event.headers && 'X-Slack-Request-Timestamp' in event.headers)) {
-      console.log('missing header: X-Slack-Signature or X-Slack-Request-Timestamp');
+    if (!("X-Slack-Signature" in event.headers && "X-Slack-Request-Timestamp" in event.headers)) {
+      console.log("missing header: X-Slack-Signature or X-Slack-Request-Timestamp");
       return callback(null, notFoundResponse);
     }
     const signingSecret = backendService.slackSginingSecret;
-    const requestSignature = event.headers['X-Slack-Signature'];
-    const requestTimestamp = parseInt(event.headers['X-Slack-Request-Timestamp'], 10);
+    const requestSignature = event.headers["X-Slack-Signature"];
+    const requestTimestamp = parseInt(event.headers["X-Slack-Request-Timestamp"], 10);
     const { body } = event;
     const { verifyResult, error } = this.verifyRequestSignature({
-      signingSecret, requestSignature, requestTimestamp, body,
+      signingSecret,
+      requestSignature,
+      requestTimestamp,
+      body,
     });
     if (!verifyResult) {
-      console.log('verify failed');
+      console.log("verify failed");
       console.log(error);
       return callback(null, notFoundResponse);
     }
-    console.log('verify successed');
+    console.log("verify successed");
     // proxy phase
     const { statusCode, backendReponseBody } = await this.proxyClient(backendService.url);
     return callback(null, {
