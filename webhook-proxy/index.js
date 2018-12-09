@@ -5,7 +5,7 @@ const BackendResolver = require("./resolvebackend");
 const WebhookProxy = require("./webhookproxy");
 
 // dependencies of BackendResolver
-const ssm = new AWS.SSM({ region: "ap-northeast-1" }); // TODO use constant
+const ssm = new AWS.SSM({ region: process.env.AWS_REGION });
 const resolver = new BackendResolver(ssm, process.env.BACKEND_SERVICE_PARAMETER_STORE_ROOT);
 
 // dependencies of WebhookProxy
