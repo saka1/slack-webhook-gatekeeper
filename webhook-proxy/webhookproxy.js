@@ -3,10 +3,6 @@ const notFoundResponse = {
   body: "",
 };
 
-const badRequestResponse = {
-  statusCode: 400,
-};
-
 module.exports = class WebhookProxy {
   constructor(backendResolver, verifyRequestSignature, proxyClient) {
     this.backendResolver = backendResolver;
@@ -18,7 +14,7 @@ module.exports = class WebhookProxy {
     // resolve backend phase
     if (!(event.pathParameters && "backendServiceId" in event.pathParameters)) {
       console.log("backendServiceId not found");
-      return callback(null, badRequestResponse);
+      return callback(null, notFoundResponse);
     }
     const { backendServiceId } = event.pathParameters;
     const { found, backendService } = await this.backendResolver.resolve(backendServiceId);

@@ -1,4 +1,4 @@
-const { verifyRequestSignature } = require("./verify");
+const verifyRequestSignature = require("./verify");
 
 describe("the specific time", () => {
   let originalDateNow;

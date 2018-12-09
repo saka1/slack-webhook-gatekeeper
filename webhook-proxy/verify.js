@@ -1,12 +1,7 @@
 const slack = require("@slack/events-api");
 
 // wrapper of slack.verifyRequestSignature
-module.exports.verifyRequestSignature = ({
-  signingSecret,
-  requestSignature,
-  requestTimestamp,
-  body,
-}) => {
+function verifyRequestSignature({ signingSecret, requestSignature, requestTimestamp, body }) {
   try {
     if (
       slack.verifyRequestSignature({
@@ -22,4 +17,6 @@ module.exports.verifyRequestSignature = ({
     return { verifyResult: false, error };
   }
   throw new Error("must not happen");
-};
+}
+
+module.exports = verifyRequestSignature;
