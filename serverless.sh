@@ -14,13 +14,11 @@ if [ $# -eq 0 ] ; then
     exit $?
 fi
 
-target_dir=$1
-shift
-
-if [ ! -d $target_dir ]; then
-    echo 'target dir not found' 1>&2
-    exit 1
+# Regard the first argument as target dir if exists.
+if [ -d $script_dir/$1 ]; then
+    cd $script_dir/$1
+    shift
 fi
 
-cd ./$target_dir
 $serverless $@
+
