@@ -11,6 +11,11 @@ module.exports = class WebhookProxy {
   }
 
   async handler(event, _context, callback) {
+    // special case: handle 'ping' message from internal invocation
+    if ("type" in event && event.type === "ping") {
+      console.log("ping received");
+      return callback(null, { type: "pong" });
+    }
     // resolve backend phase
     if (!(event.pathParameters && "backendServiceId" in event.pathParameters)) {
       console.log("backendServiceId not found");
