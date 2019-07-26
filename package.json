@@ -1,5 +1,5 @@
 {
-  "name": "webhook-gatekeeper",
+  "name": "slack-webhook-gatekeeper",
   "version": "1.0.0",
   "author": "saka1",
   "license": "MIT",
