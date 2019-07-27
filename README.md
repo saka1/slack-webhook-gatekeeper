@@ -11,7 +11,7 @@ cd webhook-proxy && yarn install && cd ../
 # set environment variables used in webhook-proxy/serverless.yml
 
 # deploy
-./serverless.sh deploy -v
+./serverless.sh webhook-proxy deploy -v
 ```
 
 ## Example config
