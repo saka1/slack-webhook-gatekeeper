@@ -10,7 +10,7 @@ provider:
 
   environment:
     BACKEND_SERVICE_PARAMETER_STORE_ROOT: "${env:BACKEND_SERVICE_PARAMETER_STORE_ROOT}"
-    AWS_REGION: ${self:provider.region}
+    #AWS_REGION: ${self:provider.region}
 
   iamRoleStatements:
     - Effect: "Allow"
