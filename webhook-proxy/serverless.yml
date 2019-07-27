@@ -2,8 +2,9 @@ service: webhook-proxy
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs10.x
   memorySize: 128
+  timeout: 10
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'ap-northeast-1'}
